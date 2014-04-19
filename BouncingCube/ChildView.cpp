@@ -193,6 +193,12 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		case 'r':
 		case 'R':
+			
+			m_cube->v = vec3(15.0, 0., 0.);
+			m_cube->w = vec3(1., 1., 1.);
+			m_cube->c *= 0;
+			m_cube->q.w = 0;
+			//m_cube->
 			ResetMatrix();
 			break;
 		case VK_SPACE:
