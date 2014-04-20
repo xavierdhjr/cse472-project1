@@ -21,6 +21,9 @@ public:
 	int m_nTimer;
 	float m_fT;
 
+private:
+	CGrTexture m_brick;
+
 // Operations
 public:
 
