@@ -31,7 +31,7 @@ CShaderWnd::CShaderWnd()
 	m_bDragging = false;
 	m_mode = TRACKBALL_NONE;
 	m_bMoving = false;
-	m_vDown = vec3(0.f);
+	m_vDown = vec3(0.f,-1.f,0.f);
 	m_bLButtonDown = false;
 	m_bRButtonDown = false;
 }
@@ -446,7 +446,7 @@ void CShaderWnd::HandleButtons (int x, int y)
 			m_mModel = m_mRotation * m_mModel;
 			m_mRotation = mat4(1.f);
 		}
-		m_vDown = vec3(0.f);
+		//m_vDown = vec3(0.f);
 		m_bDragging = false;
 	}
 	m_mode = (TrackBallMode) (m_bLButtonDown+2*m_bRButtonDown);

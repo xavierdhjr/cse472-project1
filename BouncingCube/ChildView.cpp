@@ -153,12 +153,14 @@ void CChildView::InitGL()
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 }
 
 void CChildView::RenderGL()
 {
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
 
 	glUniformMatrix4fv(m_nPVM, 1, GL_FALSE, value_ptr(m_mPVM));
 	glUniformMatrix4fv(m_nVM, 1, GL_FALSE, value_ptr(m_mVM));
@@ -173,6 +175,7 @@ void CChildView::RenderGL()
 
 	glUniform4fv(glGetUniformLocation(m_program, "AmbientProduct"), 1, value_ptr(ambient_product));
 	glUniform1i( glGetUniformLocation(m_program, "diffuse_mat"), 0);
+
 	m_cube->RenderGL(m_program);
 	ambient_product = light_ambient*material_transpartent;
 	glUniform1i( glGetUniformLocation(m_program, "diffuse_mat"), 1);
@@ -232,6 +235,12 @@ void CChildView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	m_cube->Update(0.04);
+	//if(m_bDragging)
+
+	vec4 downV4 = vec4(0,-1,0,0) * m_mModel;
+
+	vec3 v = glm::normalize(vec3(downV4.x, downV4.y, downV4.z));
+	m_cube->SetDown(v);
 	Invalidate();
 
 	CShaderWnd::OnTimer(nIDEvent);

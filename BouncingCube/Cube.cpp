@@ -87,6 +87,7 @@ void CCube::InitGL(GLuint program)
 
 void CCube::RenderGL(GLuint program)
 {
+
 	glBindVertexArray(vao);
 
 	glUniformMatrix4fv(glGetUniformLocation(program,"mT"), 1, GL_FALSE, value_ptr(m_translation));
@@ -99,7 +100,7 @@ void CCube::RenderGL(GLuint program)
 void CCube::Update(double dt)
 {
 	//update velocity and angular velocity
-	v = 0.99*v+ dt* vec3(0, -9.8, 0);
+	v = 0.99*v+ dt* down_vec;
 	w = 0.99*w;
 
 	//update translation of center of mass c, and rotation (represented by a quaternion q)
@@ -185,4 +186,9 @@ const quat operator* (vec3 v, quat q)
 const quat operator* (float s, quat q)
 {
 	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
+}
+
+void CCube::SetDown(vec3 down)
+{
+	down_vec = down * 9.8f;
 }
