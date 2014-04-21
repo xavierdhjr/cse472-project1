@@ -19,7 +19,7 @@ CChildView::CChildView()
 	m_nTimer = -1;
 	m_fT = 0.f;
 	m_cube = new CCube(0.5);
-	m_wall = new CCube(10);
+	m_wall = new CCube(10, false);
 	m_brick.LoadFile(L"textures/brick.bmp");
 }
 
@@ -192,6 +192,7 @@ void CChildView::CleanGL()
 
 void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
+	cout << nChar << endl;
 	switch (nChar) {
 	case 'r':
 	case 'R':
