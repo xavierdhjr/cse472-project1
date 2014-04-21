@@ -6,6 +6,7 @@
 #pragma once
 #include "ShaderWnd/ShaderWnd.h"
 #include "Cube.h"
+#include "graphics\GrTexture.h"
 // CChildView window
 
 class CChildView : public CShaderWnd

@@ -28,6 +28,35 @@ CCube::CCube(double size)
 	w = vec3(1., 1., 1.);
 }
 
+CCube::CCube(double size, bool drawFrontFace)
+{
+	// Vertices of a unit cube centered at origin, sides aligned with axes
+	vertex_positions[0] = point4( -size, -size,  size, 1.0 );
+	vertex_positions[1] = point4( -size,  size,  size, 1.0 );
+	vertex_positions[2] = point4(  size,  size,  size, 1.0 );
+	vertex_positions[3] = point4(  size, -size,  size, 1.0 );
+	vertex_positions[4] = point4( -size, -size, -size, 1.0 );
+	vertex_positions[5] = point4( -size,  size, -size, 1.0 );
+	vertex_positions[6] = point4(  size,  size, -size, 1.0 );
+	vertex_positions[7] = point4(  size, -size, -size, 1.0 );
+
+
+	int Index = 0;
+	if(drawFrontFace)
+	{
+		quad( 1, 0, 3, 2 , vertex_positions, Index);
+	}
+	quad( 2, 3, 7, 6 ,  vertex_positions, Index);
+	quad( 3, 0, 4, 7 ,  vertex_positions, Index);
+	quad( 6, 5, 1, 2 ,  vertex_positions, Index);
+	quad( 4, 5, 6, 7 ,  vertex_positions, Index);
+	quad( 5, 4, 0, 1 ,  vertex_positions, Index);
+
+	//Initialize the motion
+	v = vec3(15.0, 0., 0.);
+	w = vec3(1., 1., 1.);
+}
+
 void CCube::quad(int a, int b, int c, int d, point4 * vertex_positions, int& Index)
 {
 	vec3 u = vec3(vertex_positions[b]-vertex_positions[a]);
@@ -96,10 +125,54 @@ void CCube::RenderGL(GLuint program)
 	glDrawArrays(GL_TRIANGLES, 0,  NumVertices); 
 }
 
+void CCube::addImpulse(int direction)
+{
+
+	m_impulse.z = 0;
+	// set imput vector
+	switch(direction)
+	{
+	case 1:
+		m_impulse.x = -1;
+		m_impulse.y = 0;
+		break;
+	case 2:
+		m_impulse.x = 0;
+		m_impulse.y = 1;
+		break;
+	case 3:
+		m_impulse.x = 1;
+		m_impulse.y = 0;
+		break;
+	case 4:
+		m_impulse.x = 0;
+		m_impulse.y = -1;
+		
+		break;
+	}
+
+}
+
+
+vec3 Lerp(vec3 from, vec3 to, float amount)
+{
+	vec3 ret;
+	ret.x = from.x + (to.x - from.x)*amount;
+	ret.y = from.y + (to.y - from.y)*amount;
+	ret.z = from.z + (to.z - from.z)*amount;
+	return ret;
+}
+
 void CCube::Update(double dt)
 {
+	vec3 zero(0,0,0);
+
 	//update velocity and angular velocity
-	v = 0.99*v+ dt* vec3(0, -9.8, 0);
+	v = 0.99*v+ dt* vec3(0, -9.8, 0) + m_impulse;
+	
+	// lerp impulse to zero
+	m_impulse = Lerp(m_impulse, zero, 0.1f);
+
 	w = 0.99*w;
 
 	//update translation of center of mass c, and rotation (represented by a quaternion q)
@@ -186,3 +259,5 @@ const quat operator* (float s, quat q)
 {
 	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
 }
+
+
