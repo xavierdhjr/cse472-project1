@@ -108,6 +108,7 @@
     <ClInclude Include="BouncingCube.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="graphics\GrCamera.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShaderWnd\ShaderWnd.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="BouncingCube.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="graphics\GrTexture.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="ShaderWnd\glew.cpp" />
     <ClCompile Include="ShaderWnd\ShaderWnd.cpp" />

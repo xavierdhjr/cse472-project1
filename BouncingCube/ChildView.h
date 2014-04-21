@@ -6,6 +6,7 @@
 #pragma once
 #include "ShaderWnd/ShaderWnd.h"
 #include "Cube.h"
+#include "graphics\GrTexture.h"
 // CChildView window
 
 class CChildView : public CShaderWnd
@@ -20,6 +21,9 @@ public:
 	bool m_bTimer;
 	int m_nTimer;
 	float m_fT;
+
+private:
+	CGrTexture m_brick;
 
 // Operations
 public:

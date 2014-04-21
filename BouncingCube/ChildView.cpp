@@ -19,7 +19,8 @@ CChildView::CChildView()
 	m_nTimer = -1;
 	m_fT = 0.f;
 	m_cube = new CCube(0.5);
-	m_wall = new CCube(10);
+	m_wall = new CCube(10, false);
+	m_brick.LoadFile(L"textures/brick.bmp");
 }
 
 CChildView::~CChildView()
@@ -59,7 +60,7 @@ const int  TextureSize  = 64;
 GLuint textures[2];
 GLubyte image[TextureSize][TextureSize][3];
 GLubyte image2[TextureSize][TextureSize][3];
-//vec2   tex_coords[NumVertices];
+vec2   tex_coords[NumVertices];
 typedef  vec4  point4;typedef  vec4  color4;
 
 void CChildView::InitGL()
@@ -110,7 +111,10 @@ void CChildView::InitGL()
 	glBindTexture( GL_TEXTURE_2D, textures[0]);
 	glActiveTexture( GL_TEXTURE1 );
 	glBindTexture( GL_TEXTURE_2D, textures[1]);
-
+	glActiveTexture( GL_TEXTURE2 );
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBindTexture(GL_TEXTURE_2D, m_brick.TexName());
 
 
 	m_cube->InitGL(m_program);
@@ -121,8 +125,8 @@ void CChildView::InitGL()
 	color4 light_diffuse (1.f, 1.f, 1.f, 1.f);
 	color4 light_specular (1.f, 1.f, 1.f, 1.f);
 
-	color4 material_ambient(.3f, .6f, .3f, 1.f);
-	color4 material_diffuse (0.3f, .6f, 0.3f, 1.f);
+	color4 material_ambient(.3f, .3f, .3f, 1.f);
+	color4 material_diffuse (0.3f, .3f, 0.3f, 1.f);
 	color4 material_specular (1.f, 1.f, 1.f, 1.f);
 	float material_shininess = 100.0f;
 
@@ -169,7 +173,7 @@ void CChildView::RenderGL()
 
 	color4 light_ambient (0.2f, 0.2f, 0.2f, 1.f);
 	color4 material_ambient(.3f, .6f, .3f, 1.f);
-	color4 material_transpartent(.3f, .6f, .3f, 0.1f);
+	color4 material_transpartent(.3f, .3f, .3f, 1.f);
 
 	color4 ambient_product = light_ambient*material_ambient;
 
@@ -178,7 +182,7 @@ void CChildView::RenderGL()
 
 	m_cube->RenderGL(m_program);
 	ambient_product = light_ambient*material_transpartent;
-	glUniform1i( glGetUniformLocation(m_program, "diffuse_mat"), 1);
+	glUniform1i( glGetUniformLocation(m_program, "diffuse_mat"), 2);
 	glUniform4fv(glGetUniformLocation(m_program, "AmbientProduct"), 1, value_ptr(ambient_product));
 	m_wall->RenderGL(m_program);
 }
@@ -194,6 +198,48 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	switch (nChar) 
 	{
+		// set indices of corner
+	case '0':
+		m_cube->setCornerIndex(0);
+	break;
+	case '1':
+		m_cube->setCornerIndex(1);
+	break;
+	case '2':
+		m_cube->setCornerIndex(2);
+	break;
+	case '3':
+		m_cube->setCornerIndex(3);
+	break;
+	case '4':
+		m_cube->setCornerIndex(4);
+	break;
+	case '5':
+		m_cube->setCornerIndex(5);
+	break;
+	case '6':
+		m_cube->setCornerIndex(6);
+	break;
+	case '7':
+		m_cube->setCornerIndex(7);
+	break;
+	// add impulse force
+	case 37:
+		// left
+		m_cube->addImpulse(0);
+		break;
+	case 38:
+		// up
+		m_cube->addImpulse(1);
+		break;
+	case 39:
+		// right
+		m_cube->addImpulse(2);
+		break;
+	case 40:
+		// down
+		m_cube->addImpulse(3);
+		break;
 		case 'r':
 		case 'R':
 			
