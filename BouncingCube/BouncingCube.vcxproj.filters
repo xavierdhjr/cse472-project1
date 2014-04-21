@@ -67,7 +67,7 @@
     <ClInclude Include="Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\GrTexture.h">
+    <ClInclude Include="graphics\GrCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
