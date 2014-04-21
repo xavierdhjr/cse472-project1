@@ -199,46 +199,29 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	switch (nChar) 
 	{
 		// set indices of corner
-	case '0':
-		m_cube->setCornerIndex(0);
-	break;
-	case '1':
-		m_cube->setCornerIndex(1);
-	break;
-	case '2':
-		m_cube->setCornerIndex(2);
-	break;
-	case '3':
-		m_cube->setCornerIndex(3);
-	break;
-	case '4':
-		m_cube->setCornerIndex(4);
-	break;
-	case '5':
-		m_cube->setCornerIndex(5);
-	break;
-	case '6':
-		m_cube->setCornerIndex(6);
-	break;
-	case '7':
-		m_cube->setCornerIndex(7);
-	break;
-	// add impulse force
-	case 37:
-		// left
-		m_cube->addImpulse(0);
+		case '0':
+			m_cube->setCornerIndex(0);
 		break;
-	case 38:
-		// up
-		m_cube->addImpulse(1);
+		case '1':
+			m_cube->setCornerIndex(1);
 		break;
-	case 39:
-		// right
-		m_cube->addImpulse(2);
+		case '2':
+			m_cube->setCornerIndex(2);
 		break;
-	case 40:
-		// down
-		m_cube->addImpulse(3);
+		case '3':
+			m_cube->setCornerIndex(3);
+		break;
+		case '4':
+			m_cube->setCornerIndex(4);
+		break;
+		case '5':
+			m_cube->setCornerIndex(5);
+		break;
+		case '6':
+			m_cube->setCornerIndex(6);
+		break;
+		case '7':
+			m_cube->setCornerIndex(7);
 		break;
 		case 'r':
 		case 'R':
@@ -259,12 +242,16 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			break;
 		case VK_UP:
+			m_cube->addImpulse(1);
 			break;
 		case VK_DOWN:
+			m_cube->addImpulse(3);
 			break;
 		case VK_RIGHT:
+			m_cube->addImpulse(2);
 			break;
 		case VK_LEFT:
+			m_cube->addImpulse(0);
 			break;
 	}
 	CShaderWnd::OnKeyDown(nChar, nRepCnt, nFlags);
