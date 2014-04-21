@@ -125,10 +125,54 @@ void CCube::RenderGL(GLuint program)
 	glDrawArrays(GL_TRIANGLES, 0,  NumVertices); 
 }
 
+void CCube::addImpulse(int direction)
+{
+
+	m_impulse.z = 0;
+	// set imput vector
+	switch(direction)
+	{
+	case 1:
+		m_impulse.x = -1;
+		m_impulse.y = 0;
+		break;
+	case 2:
+		m_impulse.x = 0;
+		m_impulse.y = 1;
+		break;
+	case 3:
+		m_impulse.x = 1;
+		m_impulse.y = 0;
+		break;
+	case 4:
+		m_impulse.x = 0;
+		m_impulse.y = -1;
+		
+		break;
+	}
+
+}
+
+
+vec3 Lerp(vec3 from, vec3 to, float amount)
+{
+	vec3 ret;
+	ret.x = from.x + (to.x - from.x)*amount;
+	ret.y = from.y + (to.y - from.y)*amount;
+	ret.z = from.z + (to.z - from.z)*amount;
+	return ret;
+}
+
 void CCube::Update(double dt)
 {
+	vec3 zero(0,0,0);
+
 	//update velocity and angular velocity
-	v = 0.99*v+ dt* vec3(0, -9.8, 0);
+	v = 0.99*v+ dt* vec3(0, -9.8, 0) + m_impulse;
+	
+	// lerp impulse to zero
+	m_impulse = Lerp(m_impulse, zero, 0.1f);
+
 	w = 0.99*w;
 
 	//update translation of center of mass c, and rotation (represented by a quaternion q)
@@ -215,3 +259,5 @@ const quat operator* (float s, quat q)
 {
 	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
 }
+
+

@@ -192,8 +192,49 @@ void CChildView::CleanGL()
 
 void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	cout << nChar << endl;
 	switch (nChar) {
+		// set indices of corner
+	case '0':
+		m_cube->setCornerIndex(0);
+	break;
+	case '1':
+		m_cube->setCornerIndex(1);
+	break;
+	case '2':
+		m_cube->setCornerIndex(2);
+	break;
+	case '3':
+		m_cube->setCornerIndex(3);
+	break;
+	case '4':
+		m_cube->setCornerIndex(4);
+	break;
+	case '5':
+		m_cube->setCornerIndex(5);
+	break;
+	case '6':
+		m_cube->setCornerIndex(6);
+	break;
+	case '7':
+		m_cube->setCornerIndex(7);
+	break;
+	// add impulse force
+	case 37:
+		// left
+		m_cube->addImpulse(0);
+		break;
+	case 38:
+		// up
+		m_cube->addImpulse(1);
+		break;
+	case 39:
+		// right
+		m_cube->addImpulse(2);
+		break;
+	case 40:
+		// down
+		m_cube->addImpulse(3);
+		break;
 	case 'r':
 	case 'R':
 		ResetMatrix();
