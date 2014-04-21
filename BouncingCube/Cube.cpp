@@ -241,26 +241,26 @@ void CCube::Update(double dt)
 	}
 }
 
-//Utility functions
-//const vec3 operator* (double dt, vec3 v)
-//{
-//	return vec3(v.x*dt, v.y*dt, v.z*dt);
-//}
-//
-//const quat operator+ (quat q1, quat q2)
-//{
-//	return quat (q1[3]+q2[3], q1[0]+q2[0],q1[1]+q2[1],q1[2]+q2[2]);
-//}
-//
-//const quat operator* (vec3 v, quat q)
-//{
-//	return quat (-v[0]*q[0]-v[1]*q[1]-v[2]*q[2], q[3]*v[0] + v[1]*q[2]-v[2]*q[1] , q[3]*v[1] - v[0]*q[2] + v[2] * q[0], q[3]*v[2] + v[0]*q[1] - v[1]*q[0]);
-//}
-//
-//const quat operator* (float s, quat q)
-//{
-//	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
-//}
+// Utility Functions
+const vec3 operator* (double dt, vec3 v)
+{
+	return vec3(v.x*dt, v.y*dt, v.z*dt);
+}
+
+const quat operator+ (quat q1, quat q2)
+{
+	return quat (q1[3]+q2[3], q1[0]+q2[0],q1[1]+q2[1],q1[2]+q2[2]);
+}
+
+const quat operator* (vec3 v, quat q)
+{
+	return quat (-v[0]*q[0]-v[1]*q[1]-v[2]*q[2], q[3]*v[0] + v[1]*q[2]-v[2]*q[1] , q[3]*v[1] - v[0]*q[2] + v[2] * q[0], q[3]*v[2] + v[0]*q[1] - v[1]*q[0]);
+}
+
+const quat operator* (float s, quat q)
+{
+	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
+}
 
 void CCube::SetDown(vec3 down)
 {

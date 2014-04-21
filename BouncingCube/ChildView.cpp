@@ -178,7 +178,7 @@ void CChildView::RenderGL()
 
 	color4 light_ambient (0.2f, 0.2f, 0.2f, 1.f);
 	color4 material_ambient(.3f, .6f, .3f, 1.f);
-	color4 material_transpartent(.3f, .3f, .3f, 0.1f);
+	color4 material_transpartent(.3f, .3f, .3f, 1.f);
 
 	color4 ambient_product = light_ambient*material_ambient;
 
@@ -283,6 +283,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 
 	vec3 v = glm::normalize(vec3(downV4.x, downV4.y, downV4.z));
 	m_cube->SetDown(v);
+	m_box->SetDown(v);
 	Invalidate();
 
 	CShaderWnd::OnTimer(nIDEvent);
