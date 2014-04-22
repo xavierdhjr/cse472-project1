@@ -6,6 +6,7 @@
 #pragma once
 #include "ShaderWnd/ShaderWnd.h"
 #include "Cube.h"
+#include "Box.h"
 // CChildView window
 
 class CChildView : public CShaderWnd
@@ -17,6 +18,8 @@ public:
 // Attributes
 public:
 	CCube *m_cube, *m_wall;
+	CBox *m_box;
+	bool m_renderBox;
 	bool m_bTimer;
 	int m_nTimer;
 	float m_fT;
@@ -44,5 +47,6 @@ protected:
 public:
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnSelectobjectBox();
 };
 

@@ -16,10 +16,12 @@
 CChildView::CChildView()
 {
 	m_bTimer = false;
+	m_renderBox = false;
 	m_nTimer = -1;
 	m_fT = 0.f;
 	m_cube = new CCube(0.5);
 	m_wall = new CCube(10);
+	m_box = new CBox(0.5);
 	m_brick.LoadFile(L"textures/brick.bmp");
 }
 
@@ -27,12 +29,14 @@ CChildView::~CChildView()
 {
 	delete m_cube;
 	delete m_wall;
+	delete m_box;
 }
 
 
 BEGIN_MESSAGE_MAP(CChildView, CShaderWnd)
 	ON_WM_KEYDOWN()
 	ON_WM_TIMER()
+	ON_COMMAND(ID_SELECTOBJECT_BOX, &CChildView::OnSelectobjectBox)
 END_MESSAGE_MAP()
 
 
@@ -118,6 +122,7 @@ void CChildView::InitGL()
 
 	m_cube->InitGL(m_program);
 	m_wall->InitGL(m_program);
+	m_box->InitGL(m_program);
 
 	point4 light_position (-5.f, 5.f, -5.f, 0.f);
 	color4 light_ambient (0.2f, 0.2f, 0.2f, 1.f);
@@ -170,13 +175,17 @@ void CChildView::RenderGL()
 
 	color4 light_ambient (0.2f, 0.2f, 0.2f, 1.f);
 	color4 material_ambient(.3f, .6f, .3f, 1.f);
-	color4 material_transpartent(.3f, .3f, .3f, 1.f);
+	color4 material_transpartent(.3f, .3f, .3f, 0.1f);
 
 	color4 ambient_product = light_ambient*material_ambient;
 
 	glUniform4fv(glGetUniformLocation(m_program, "AmbientProduct"), 1, value_ptr(ambient_product));
 	glUniform1i( glGetUniformLocation(m_program, "diffuse_mat"), 0);
-	m_cube->RenderGL(m_program);
+	if (m_renderBox) {
+		m_box->RenderGL(m_program);
+	} else {
+		m_cube->RenderGL(m_program);
+	}
 	ambient_product = light_ambient*material_transpartent;
 	glUniform1i( glGetUniformLocation(m_program, "diffuse_mat"), 2);
 	glUniform4fv(glGetUniformLocation(m_program, "AmbientProduct"), 1, value_ptr(ambient_product));
@@ -212,7 +221,15 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	m_cube->Update(0.04);
+	m_box->Update(0.04);
 	Invalidate();
 
 	CShaderWnd::OnTimer(nIDEvent);
+}
+
+
+void CChildView::OnSelectobjectBox()
+{
+	m_renderBox = !m_renderBox;
+	Invalidate();
 }

@@ -1,18 +1,18 @@
 #include "StdAfx.h"
-#include "Cube.h"
+#include "Box.h"
 
-CCube::CCube(double size)
+CBox::CBox(double size)
 	: m_texture(NULL)
 {
-	// Vertices of a unit cube centered at origin, sides aligned with axes
-	vertex_positions[0] = point4( -size, -size,  size, 1.0 );
-	vertex_positions[1] = point4( -size,  size,  size, 1.0 );
-	vertex_positions[2] = point4(  size,  size,  size, 1.0 );
-	vertex_positions[3] = point4(  size, -size,  size, 1.0 );
-	vertex_positions[4] = point4( -size, -size, -size, 1.0 );
-	vertex_positions[5] = point4( -size,  size, -size, 1.0 );
-	vertex_positions[6] = point4(  size,  size, -size, 1.0 );
-	vertex_positions[7] = point4(  size, -size, -size, 1.0 );
+	// Vertices of a unit Box centered at origin, sides aligned with axes
+	vertex_positions[0] = point4( -size * 2.0, -size,  size, 1.0 );
+	vertex_positions[1] = point4( -size * 2.0,  size,  size, 1.0 );
+	vertex_positions[2] = point4(  size * 2.0,  size,  size, 1.0 );
+	vertex_positions[3] = point4(  size * 2.0, -size,  size, 1.0 );
+	vertex_positions[4] = point4( -size * 2.0, -size, -size, 1.0 );
+	vertex_positions[5] = point4( -size * 2.0,  size, -size, 1.0 );
+	vertex_positions[6] = point4(  size * 2.0,  size, -size, 1.0 );
+	vertex_positions[7] = point4(  size * 2.0, -size, -size, 1.0 );
 
 
 	int Index = 0;
@@ -29,7 +29,7 @@ CCube::CCube(double size)
 	w = vec3(1., 1., 1.);
 }
 
-void CCube::quad(int a, int b, int c, int d, point4 * vertex_positions, int& Index)
+void CBox::quad(int a, int b, int c, int d, point4 * vertex_positions, int& Index)
 {
 	vec3 u = vec3(vertex_positions[b]-vertex_positions[a]);
 	vec3 v = vec3(vertex_positions[c]-vertex_positions[b]);
@@ -57,11 +57,11 @@ void CCube::quad(int a, int b, int c, int d, point4 * vertex_positions, int& Ind
 }
 
 
-CCube::~CCube(void)
+CBox::~CBox(void)
 {
 }
 
-void CCube::InitGL(GLuint program)
+void CBox::InitGL(GLuint program)
 {
 	// Create and initialize a buffer object
 	glGenVertexArrays( 1, &vao);
@@ -86,7 +86,7 @@ void CCube::InitGL(GLuint program)
 
 }
 
-void CCube::RenderGL(GLuint program)
+void CBox::RenderGL(GLuint program)
 {
 	glBindVertexArray(vao);
 
@@ -94,10 +94,10 @@ void CCube::RenderGL(GLuint program)
 	glUniformMatrix4fv(glGetUniformLocation(program,"mR"), 1, GL_FALSE, value_ptr(m_rotation));
 
 	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0,  NumVertices); 
+	glDrawArrays(GL_TRIANGLES, 0,  NumVerts); 
 }
 
-void CCube::Update(double dt)
+void CBox::Update(double dt)
 {
 	//update velocity and angular velocity
 	v = 0.99*v+ dt* vec3(0, -9.8, 0);
@@ -151,7 +151,7 @@ void CCube::Update(double dt)
 
 			vec3 u_rel = v + glm::cross(w, vec3(contact));
 			vec3 rxn = glm::cross(vec3(contact), n);
-			//For a cube, the impulse j=(1+e)* dot(u_rel,n) / (1+ 6 |r cross n|^2)
+			//For a Box, the impulse j=(1+e)* dot(u_rel,n) / (1+ 6 |r cross n|^2)
 			//double j = -1.9f * glm::dot(u_rel,n);
 			double j = -1.9f * glm::dot(u_rel,n) / (1.+6.*glm::dot(rxn,rxn));
 			if (j > 0) {
@@ -168,22 +168,22 @@ void CCube::Update(double dt)
 }
 
 //Utility functions
-//const vec3 operator* (double dt, vec3 v)
-//{
-//	return vec3(v.x*dt, v.y*dt, v.z*dt);
-//}
-//
-//const quat operator+ (quat q1, quat q2)
-//{
-//	return quat (q1[3]+q2[3], q1[0]+q2[0],q1[1]+q2[1],q1[2]+q2[2]);
-//}
-//
-//const quat operator* (vec3 v, quat q)
-//{
-//	return quat (-v[0]*q[0]-v[1]*q[1]-v[2]*q[2], q[3]*v[0] + v[1]*q[2]-v[2]*q[1] , q[3]*v[1] - v[0]*q[2] + v[2] * q[0], q[3]*v[2] + v[0]*q[1] - v[1]*q[0]);
-//}
-//
-//const quat operator* (float s, quat q)
-//{
-//	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
-//}
+const vec3 operator* (double dt, vec3 v)
+{
+	return vec3(v.x*dt, v.y*dt, v.z*dt);
+}
+
+const quat operator+ (quat q1, quat q2)
+{
+	return quat (q1[3]+q2[3], q1[0]+q2[0],q1[1]+q2[1],q1[2]+q2[2]);
+}
+
+const quat operator* (vec3 v, quat q)
+{
+	return quat (-v[0]*q[0]-v[1]*q[1]-v[2]*q[2], q[3]*v[0] + v[1]*q[2]-v[2]*q[1] , q[3]*v[1] - v[0]*q[2] + v[2] * q[0], q[3]*v[2] + v[0]*q[1] - v[1]*q[0]);
+}
+
+const quat operator* (float s, quat q)
+{
+	return quat ( q[3]*s, q[0]*s,q[1]*s,q[2]*s);
+}
