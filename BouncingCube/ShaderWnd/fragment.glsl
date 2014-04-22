@@ -25,7 +25,7 @@ void main()
 	// Compute terms in the illumination equation
     vec4 ambient = AmbientProduct;
     float Kd = abs(dot(L,N)); //max(dot(L, N), 0.0);
-    vec4  diffuse = Kd*DiffuseProduct*texture(diffuse_mat, texCoord).rgb;
+    vec4  diffuse = Kd*DiffuseProduct*texture(diffuse_mat, texCoord);
     float Ks = pow(max(dot(N, H), 0.0), Shininess);
     vec4  specular = Ks * SpecularProduct;
     if(dot(L, N) < 0.0) 
